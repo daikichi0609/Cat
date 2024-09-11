@@ -33,6 +33,9 @@ public enum KeyCodeFlag
     One = 1 << 9,
     Two = 1 << 10,
     Three = 1 << 11,
+
+    // マウス
+    Mouse0 = 1 << 12,
 }
 
 public readonly struct InputInfo
@@ -127,6 +130,9 @@ public class InputManager : MonoBehaviour
         if (Input.GetKey(KeyCode.Alpha3))
             flag |= KeyCodeFlag.Three;
 
+        if (Input.GetKey(KeyCode.Mouse0))
+            flag |= KeyCodeFlag.Mouse0;
+
         return flag;
     }
 
@@ -173,6 +179,9 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
             flag |= KeyCodeFlag.Three;
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+            flag |= KeyCodeFlag.Mouse0;
 
         return flag;
     }
