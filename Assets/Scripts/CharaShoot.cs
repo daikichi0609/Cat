@@ -45,7 +45,7 @@ public class CharaShoot : MonoBehaviour
     }
 
     /// <summary>
-    /// 移動
+    /// 攻撃
     /// </summary>
     /// <param name="dir"></param>
     private void Shoot()

@@ -10,14 +10,12 @@ public class CharaMove : MonoBehaviour
     private static readonly float ms_Speed = 3f;
 
     [SerializeField]
+    private ObjectHolder m_ObjectHolder;
+    [SerializeField]
     private InputManager m_InputManager;
     [SerializeField]
     private CameraHandler m_CameraHandler;
 
-    [SerializeField]
-    private GameObject m_MoveObject;
-    [SerializeField]
-    private GameObject m_CharaObject;
     [SerializeField]
     private Animator m_CharaAnimator;
 
@@ -29,7 +27,7 @@ public class CharaMove : MonoBehaviour
         m_InputManager.InputEvent.SubscribeWithState(this, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
 
         // カメラ登録
-        m_CameraHandler.SetParent(m_MoveObject);
+        m_CameraHandler.SetParent(m_ObjectHolder.MoveObject);
     }
 
     /// <summary>
@@ -85,7 +83,7 @@ public class CharaMove : MonoBehaviour
     private void Move(DIRECTION dir)
     {
         Face(dir); // 向き
-        m_MoveObject.transform.position += (Vector3)dir.ToV3Int() * ms_Speed * Time.deltaTime; // 移動
+        m_ObjectHolder.MoveObject.transform.position += (Vector3)dir.ToV3Int() * ms_Speed * Time.deltaTime; // 移動
         // アニメーション開始
         if (m_IsMoving == null)
             m_IsMoving = PlayAnimation(ANIMATION_TYPE.MOVE);
@@ -95,7 +93,7 @@ public class CharaMove : MonoBehaviour
     /// 方向転換
     /// </summary>
     /// <param name="dir"></param>
-    private void Face(DIRECTION dir) => m_CharaObject.transform.rotation = Quaternion.LookRotation(dir.ToV3Int());
+    private void Face(DIRECTION dir) => m_ObjectHolder.CharaObject.transform.rotation = Quaternion.LookRotation(dir.ToV3Int());
 
     /// <summary>
     /// アニメーション
