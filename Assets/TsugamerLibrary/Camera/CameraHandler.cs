@@ -9,6 +9,7 @@ public class CameraHandler : MonoBehaviour
     /// </summary>
     [SerializeField]
     private GameObject m_MainCamera;
+    public GameObject MainCamera => m_MainCamera;
 
     private static readonly Vector3 ms_KeepPos = new Vector3(0, 5.5f, -3.5f);
     private static readonly Vector3 ms_Angle = new Vector3(60f, 0, 0);
