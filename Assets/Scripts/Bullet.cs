@@ -4,18 +4,18 @@ using NaughtyAttributes;
 public class Bullet : MonoBehaviour
 {
     [ShowNativeProperty]
+    private float CurrentLimit { get; set; }
+
+    [ShowNativeProperty]
     private Vector3 TargetPos { get; set; }
     [ShowNativeProperty]
     private float Speed { get; set; }
     [ShowNativeProperty]
     private int Damage { get; set; }
     [ShowNativeProperty]
-    private int TimeLimit { get; set; }
+    private float TimeLimit { get; set; }
 
-    [SerializeField]
-    private float m_CurrentLimit;
-
-    public void Setup(Vector3 targetPos, float speed, int damage, int limit)
+    public void Setup(Vector3 targetPos, float speed, int damage, float limit)
     {
         TargetPos = targetPos;
         Speed = speed;
@@ -27,13 +27,13 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        m_CurrentLimit += Time.deltaTime;
-        if (m_CurrentLimit >= TimeLimit)
+        CurrentLimit += Time.deltaTime;
+        if (CurrentLimit >= TimeLimit)
         {
             Destroy(gameObject);
             return;
         }
-        transform.position += new Vector3(0f, 0f, Speed);
+        transform.Translate(Vector3.forward * Time.deltaTime * Speed);
     }
 
     private void OnCollisionEnter(Collision col)

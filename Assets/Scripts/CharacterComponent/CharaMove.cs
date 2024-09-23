@@ -12,12 +12,12 @@ public class CharaMove : MonoBehaviour
     [SerializeField]
     private ObjectHolder m_ObjectHolder;
     [SerializeField]
+    private Animator m_CharaAnimator;
+
+    [SerializeField]
     private InputManager m_InputManager;
     [SerializeField]
     private CameraHandler m_CameraHandler;
-
-    [SerializeField]
-    private Animator m_CharaAnimator;
 
     private IDisposable m_IsMoving;
 
