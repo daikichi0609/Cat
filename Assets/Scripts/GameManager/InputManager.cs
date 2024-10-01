@@ -4,6 +4,7 @@ using UnityEngine;
 using UniRx;
 using System;
 using Zenject;
+using TsugamerLibrary;
 
 [Flags]
 public enum KeyCodeFlag
@@ -51,7 +52,7 @@ public readonly struct InputInfo
     }
 }
 
-public class InputManager : MonoBehaviour
+public class InputManager : Singleton<InputManager>
 {
     /// <summary>
     /// 入力イベント

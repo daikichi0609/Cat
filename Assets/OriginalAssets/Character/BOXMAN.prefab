@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8919303008253423378}
-  - component: {fileID: 1420863649847484911}
   - component: {fileID: 8816964080016956252}
   - component: {fileID: 7116689284534879736}
+  - component: {fileID: 1420863649847484911}
   - component: {fileID: 2501287616138659994}
   m_Layer: 0
   m_Name: BOXMAN
@@ -36,22 +36,6 @@ Transform:
   - {fileID: 421353823303551417}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1420863649847484911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2086949278227756083}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17b81daa1227a41aa93e0b5b987e6e68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ObjectHolder: {fileID: 8816964080016956252}
-  m_CharaAnimator: {fileID: 421353823296414763}
-  m_InputManager: {fileID: 0}
-  m_CameraHandler: {fileID: 0}
 --- !u!114 &8816964080016956252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,7 +62,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23cd8da1a48a4caa9c0232e095767f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Hp: 0
+  m_Type: 1
+  m_MaxHp: 3
+--- !u!114 &1420863649847484911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2086949278227756083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17b81daa1227a41aa93e0b5b987e6e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ObjectHolder: {fileID: 8816964080016956252}
+  m_CharaAnimator: {fileID: 421353823296414763}
+  m_InputManager: {fileID: 0}
+  m_CameraHandler: {fileID: 0}
 --- !u!114 &2501287616138659994
 MonoBehaviour:
   m_ObjectHideFlags: 0

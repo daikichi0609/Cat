@@ -685,14 +685,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6681012351742415626, guid: 51884aaba6c2549598804de43bd357c4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6846082738961093102}
   m_SourcePrefab: {fileID: 100100000, guid: 51884aaba6c2549598804de43bd357c4, type: 3}
 --- !u!114 &6846082738961093099 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4195802834097780072, guid: 51884aaba6c2549598804de43bd357c4, type: 3}
   m_PrefabInstance: {fileID: 6846082738961093098}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6846082738961093101}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d8be180d3e4c4849adabc0036aafa37, type: 3}
@@ -703,12 +706,32 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 647719429152650547, guid: 51884aaba6c2549598804de43bd357c4, type: 3}
   m_PrefabInstance: {fileID: 6846082738961093098}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 6846082738961093101}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ca3ecca8976574d2f9b8a29398a1b47c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6846082738961093101 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6681012351742415626, guid: 51884aaba6c2549598804de43bd357c4, type: 3}
+  m_PrefabInstance: {fileID: 6846082738961093098}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6846082738961093102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846082738961093101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fe4a928cc1e88b40b2cfb8dd1f84b2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CharaObjectCollector:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

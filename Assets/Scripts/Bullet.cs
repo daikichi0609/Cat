@@ -37,10 +37,7 @@ public class Bullet : MonoBehaviour
         if (target.TryGetComponent<CharaStatus>(out var status) == false)
             return;
 
-        if (status.Damage(Damage) == false)
-            return;
-
-        Destroy(col.gameObject);
+        status.Damage(Damage);
         Destroy(gameObject);
     }
 }
