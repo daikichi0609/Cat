@@ -7,22 +7,17 @@ public class Bullet : MonoBehaviour
     private float CurrentLimit { get; set; }
 
     [ShowNativeProperty]
-    private Vector3 TargetPos { get; set; }
-    [ShowNativeProperty]
     private float Speed { get; set; }
     [ShowNativeProperty]
     private int Damage { get; set; }
     [ShowNativeProperty]
     private float TimeLimit { get; set; }
 
-    public void Setup(Vector3 targetPos, float speed, int damage, float limit)
+    public void Setup(float speed, int damage, float limit)
     {
-        TargetPos = targetPos;
         Speed = speed;
         Damage = damage;
         TimeLimit = limit;
-
-        transform.LookAt(TargetPos);
     }
 
     private void Update()

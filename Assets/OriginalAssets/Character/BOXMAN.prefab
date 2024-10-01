@@ -92,8 +92,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BulletPrefab: {fileID: 5093345945502568391, guid: 99e9e68872d860f41af32b4d1e9a418d, type: 3}
+  m_ObjectHolder: {fileID: 8816964080016956252}
   m_InputManager: {fileID: 0}
-  m_CameraHandler: {fileID: 0}
 --- !u!1001 &421353823303656727
 PrefabInstance:
   m_ObjectHideFlags: 0

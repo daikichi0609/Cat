@@ -21,9 +21,10 @@ public class CharaShoot : MonoBehaviour
     private Bullet m_BulletPrefab;
 
     [SerializeField]
-    private InputManager m_InputManager;
+    private ObjectHolder m_ObjectHolder;
+
     [SerializeField]
-    private CameraHandler m_CameraHandler;
+    private InputManager m_InputManager;
 
     private void Awake()
     {
@@ -63,22 +64,11 @@ public class CharaShoot : MonoBehaviour
     /// <param name="dir"></param>
     private void Shoot()
     {
-        var mainCamera = m_CameraHandler.MainCamera.GetComponent<Camera>();
-        var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-        var raycastHitList = Physics.RaycastAll(ray).AsSpan();
+        var rotation = m_ObjectHolder.CharaObject.transform.rotation;
+        Vector3 initPos = new Vector3(transform.position.x, ms_Height, transform.position.z);
 
-        if (raycastHitList.IsEmpty == false)
-        {
-            var distance = Vector3.Distance(mainCamera.transform.position, raycastHitList[0].point);
-            var mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
-
-            Vector3 targetPos = mainCamera.ScreenToWorldPoint(mousePosition);
-            targetPos.y = ms_Height;
-            Vector3 initPos = new Vector3(transform.position.x, targetPos.y, transform.position.z);
-
-            var bulletObject = Instantiate(m_BulletPrefab, initPos, Quaternion.identity);
-            var bullet = bulletObject.GetComponent<Bullet>();
-            bullet.Setup(targetPos, ms_Speed, 1, 1f);
-        }
+        var bulletObject = Instantiate(m_BulletPrefab, initPos, rotation);
+        var bullet = bulletObject.GetComponent<Bullet>();
+        bullet.Setup(ms_Speed, 1, 1f);
     }
 }
