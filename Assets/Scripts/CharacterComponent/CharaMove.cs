@@ -19,26 +19,21 @@ public class CharaMove : MonoBehaviour
     [SerializeField]
     private Animator m_CharaAnimator;
 
-    [SerializeField]
-    private InputManager m_InputManager;
-    [SerializeField]
-    private CameraHandler m_CameraHandler;
-
     private IDisposable m_IsMoving;
 
     private void Awake()
     {
         // 入力購読
-        m_InputManager.InputEvent.SubscribeWithState(this, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
+        InputManager.GetInstance().InputEvent.SubscribeWithState(this, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
 
         // カメラ登録
-        m_CameraHandler.SetParent(m_ObjectHolder.MoveObject);
+        CameraHandler.GetInstance().SetParent(m_ObjectHolder.MoveObject);
     }
 
     /// <summary>
     /// 購読用
     /// </summary>
-    /// <param name="flag"></param>
+    /// <param name="flag"></oparam>
     private void DetectInput(KeyCodeFlag flag)
     {
         // 移動検知

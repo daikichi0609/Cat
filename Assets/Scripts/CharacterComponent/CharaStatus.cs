@@ -30,8 +30,6 @@ public class CharaStatus : MonoBehaviour
     private int m_MaxHp;
 
     [SerializeField]
-    private ObjectPoolManager m_ObjectPoolManager;
-    [SerializeField]
     private ObjectHolder m_ObjectHolder;
 
     /// <summary>
@@ -57,6 +55,6 @@ public class CharaStatus : MonoBehaviour
     private void Dead()
     {
         var self = m_ObjectHolder.MoveObject;
-        m_ObjectPoolManager.SetGameObject(m_Name, self);
+        ObjectPoolManager.GetInstance().SetGameObject(m_Name, self);
     }
 }

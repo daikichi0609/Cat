@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UniRx;
 using System;
+using TsugamerLibrary;
 
-public class CameraHandler : MonoBehaviour
+public class CameraHandler : Singleton<CameraHandler>
 {
     /// <summary>
     /// メインカメラ

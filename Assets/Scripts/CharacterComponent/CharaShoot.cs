@@ -23,13 +23,10 @@ public class CharaShoot : MonoBehaviour
     [SerializeField]
     private ObjectHolder m_ObjectHolder;
 
-    [SerializeField]
-    private InputManager m_InputManager;
-
     private void Awake()
     {
         // 入力購読
-        m_InputManager.InputStartEvent.SubscribeWithState(this, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
+        InputManager.GetInstance().InputStartEvent.SubscribeWithState(this, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
     }
 
     /// <summary>
