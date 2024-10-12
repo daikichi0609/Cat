@@ -11,6 +11,8 @@ public class CharaStatus : MonoBehaviour
         ALLY,
     }
 
+    private ObjectHolder ObjectHolder { get; set; }
+
     /// <summary>
     /// キャラ名
     /// </summary>
@@ -29,13 +31,15 @@ public class CharaStatus : MonoBehaviour
     [SerializeField]
     private int m_MaxHp;
 
-    [SerializeField]
-    private ObjectHolder m_ObjectHolder;
-
     /// <summary>
     /// 現在のHP
     /// </summary>
     private int CurrentHp { get; set; }
+
+    private void Start()
+    {
+        ObjectHolder = GetComponent<ObjectHolder>();
+    }
 
     /// <summary>
     /// ダメージ
@@ -54,7 +58,7 @@ public class CharaStatus : MonoBehaviour
     /// </summary>
     private void Dead()
     {
-        var self = m_ObjectHolder.MoveObject;
+        var self = ObjectHolder.MoveObject;
         ObjectPoolManager.GetInstance().SetGameObject(m_Name, self);
     }
 }
