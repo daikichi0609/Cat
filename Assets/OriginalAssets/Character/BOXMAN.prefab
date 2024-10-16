@@ -62,7 +62,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23cd8da1a48a4caa9c0232e095767f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Type: 1
+  m_CharaName: 0
+  m_Type: 2
   m_MaxHp: 3
 --- !u!114 &1420863649847484911
 MonoBehaviour:
@@ -76,10 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b81daa1227a41aa93e0b5b987e6e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObjectHolder: {fileID: 8816964080016956252}
   m_CharaAnimator: {fileID: 421353823296414763}
-  m_InputManager: {fileID: 0}
-  m_CameraHandler: {fileID: 0}
 --- !u!114 &2501287616138659994
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,8 +91,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BulletPrefab: {fileID: 5093345945502568391, guid: 99e9e68872d860f41af32b4d1e9a418d, type: 3}
-  m_ObjectHolder: {fileID: 8816964080016956252}
-  m_InputManager: {fileID: 0}
 --- !u!1001 &421353823303656727
 PrefabInstance:
   m_ObjectHideFlags: 0

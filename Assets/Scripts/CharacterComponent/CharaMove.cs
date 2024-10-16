@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using System;
 using UniRx;
 using UnityEngine;
@@ -5,16 +6,17 @@ using UnityEngine;
 public class CharaMove : MonoBehaviour
 {
     /// <summary>
-    /// 移動スピード
-    /// </summary>
-    private static readonly float ms_MoveSpeed = 3f;
-
-    /// <summary>
     /// カメラ旋回スピード
     /// </summary>
     private static readonly float ms_CameraSpeed = 40f;
 
     private ObjectHolder ObjectHolder { get; set; }
+
+    /// <summary>
+    /// 速さ
+    /// </summary>
+    [ShowNativeProperty]
+    public float Speed { get; set; } = 3.0f;
 
     [SerializeField]
     private Animator m_CharaAnimator;
@@ -24,19 +26,13 @@ public class CharaMove : MonoBehaviour
     private void Awake()
     {
         ObjectHolder = GetComponent<ObjectHolder>();
-
-        // 入力購読
-        InputManager.GetInstance().InputEvent.SubscribeWithState(this, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
-
-        // カメラ登録
-        CameraHandler.GetInstance().SetParent(ObjectHolder.MoveObject);
     }
 
     /// <summary>
     /// 購読用
     /// </summary>
     /// <param name="flag"></oparam>
-    private void DetectInput(KeyCodeFlag flag)
+    public void DetectInput(KeyCodeFlag flag)
     {
         // 移動検知
         if (DetectInputMove(flag) == true)
@@ -95,7 +91,7 @@ public class CharaMove : MonoBehaviour
     /// 移動
     /// </summary>
     /// <param name="dir"></param>
-    private void MoveInternal(Vector3 dir) => ObjectHolder.MoveObject.transform.position += dir * ms_MoveSpeed * Time.deltaTime; // 移動
+    private void MoveInternal(Vector3 dir) => ObjectHolder.MoveObject.transform.position += dir * Speed * Time.deltaTime; // 移動
 
     /// <summary>
     /// 方向転換

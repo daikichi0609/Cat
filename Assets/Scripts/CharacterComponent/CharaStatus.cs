@@ -5,25 +5,20 @@ using UnityEngine;
 
 public class CharaStatus : MonoBehaviour
 {
-    public enum CHARA_TYPE
-    {
-        ENEMY,
-        ALLY,
-    }
-
     private ObjectHolder ObjectHolder { get; set; }
 
     /// <summary>
     /// キャラ名
     /// </summary>
     [SerializeField]
-    private CHARA_NAME m_Name;
+    private CHARA_NAME m_CharaName;
 
     /// <summary>
     /// 味方か敵か
     /// </summary>
     [SerializeField]
     private CHARA_TYPE m_Type;
+    public CHARA_TYPE Type => m_Type;
 
     /// <summary>
     /// 最大HP
@@ -59,6 +54,6 @@ public class CharaStatus : MonoBehaviour
     private void Dead()
     {
         var self = ObjectHolder.MoveObject;
-        ObjectPoolManager.GetInstance().SetGameObject(m_Name, self);
+        ObjectPoolManager.GetInstance().SetGameObject(m_CharaName, self);
     }
 }

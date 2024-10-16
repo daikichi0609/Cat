@@ -4,11 +4,22 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    /// <summary>
+    /// ‘¬‚³
+    /// </summary>
+    public float Speed { get; set; }
+
+    /// <summary>
+    /// Ú‹ß‹——£
+    /// </summary>
+    public float TargetDistance { get; set; }
+
     private CharaMove CharaMove { get; set; }
 
     private void Start()
     {
         CharaMove = GetComponent<CharaMove>();
+        CharaMove.Speed = 1.0f;
     }
 
     private void Update()
@@ -23,7 +34,9 @@ public class Enemy : MonoBehaviour
     {
         var target = CharaObjectManager.GetInstance().Player;
         var targetPos = target.transform.position;
-        var dir = (this.transform.position - targetPos).normalized;
-        CharaMove.Move(dir);
+        var dir = targetPos - this.transform.position;
+
+        if(dir.magnitude > TargetDistance)
+            CharaMove.Move(dir.normalized);
     }
 }

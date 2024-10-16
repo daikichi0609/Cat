@@ -12,8 +12,8 @@ public class CameraHandler : Singleton<CameraHandler>
     private GameObject m_MainCamera;
     public GameObject MainCamera => m_MainCamera;
 
-    private static readonly Vector3 ms_KeepPos = new Vector3(0, 3f, -3f);
-    private static readonly Vector3 ms_Angle = new Vector3(45f, 0, 0);
+    private static readonly Vector3 ms_KeepPos = new Vector3(0, 4f, -2.5f);
+    private static readonly Vector3 ms_Angle = new Vector3(60f, 0, 0);
 
     /// <summary>
     /// カメラを追従させる
