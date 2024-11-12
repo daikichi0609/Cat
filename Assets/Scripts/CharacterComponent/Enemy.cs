@@ -1,16 +1,16 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     /// <summary>
-    /// ‘¬‚³
+    /// é€Ÿã•
     /// </summary>
     public float Speed { get; set; }
 
     /// <summary>
-    /// Ú‹ß‹——£
+    /// æ¥è¿‘è·é›¢
     /// </summary>
     public float TargetDistance { get; set; }
 

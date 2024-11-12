@@ -1,4 +1,4 @@
-namespace TsugamerLibrary
+﻿namespace TsugamerLibrary
 {
     using System;
     using System.Runtime.CompilerServices;

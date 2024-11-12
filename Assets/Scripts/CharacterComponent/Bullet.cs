@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using NaughtyAttributes;
 
 public class Bullet : MonoBehaviour

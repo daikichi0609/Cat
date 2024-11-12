@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 
 public enum CHARA_NAME
 {
@@ -17,6 +17,6 @@ public enum CHARA_TYPE
 
 static class EnumExtension
 {
-    // Enum‚²‚Æ‚ÉŠg’£ƒƒ\ƒbƒh‚ðì‚é
+    // Enumã”ã¨ã«æ‹¡å¼µãƒ¡ã‚½ãƒƒãƒ‰ã‚’ä½œã‚‹
     public static bool HasBitFlag(this CHARA_TYPE value, CHARA_TYPE flag) => (value & flag) == flag;
 }

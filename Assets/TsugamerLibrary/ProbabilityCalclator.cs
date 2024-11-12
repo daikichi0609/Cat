@@ -1,4 +1,4 @@
-//  ProbabilityCalclator.cs
+﻿//  ProbabilityCalclator.cs
 //  http://kan-kikuchi.hatenablog.com/entry/ProbabilityCalclator
 //
 //  Created by kan.kikuchi on 2016.01.13.

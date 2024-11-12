@@ -1,6 +1,4 @@
-using System;
-using UniRx;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharaShoot : MonoBehaviour
 {
@@ -68,16 +66,19 @@ public class CharaShoot : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit = new RaycastHit();
+        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 3, false);
         if (Physics.Raycast(ray, out hit) == false) // hit確認
+        {
+            Debug.Log("ヒットしませんでした");
             return;
+        }
 
         var o = hit.collider.gameObject;
-        if (o.TryGetComponent<CharaStatus>(out var status) == false || status.Type == CHARA_TYPE.ALLY) // 
+        if (o.TryGetComponent<CharaStatus>(out var status) == false || status.Type.HasBitFlag(CHARA_TYPE.PLAYER) || status.Type.HasBitFlag(CHARA_TYPE.ALLY)) // 味方サイドには当たらない
+        {
+            Debug.Log("敵以外にヒットしました");
             return;
-
-        var clickedGameObject = hit.collider.gameObject;
-        Debug.Log(clickedGameObject.name);//ゲームオブジェクトの名前を出力
-        Destroy(clickedGameObject);//ゲームオブジェクトを破壊
+        }
 
         var rotation = ObjectHolder.CharaObject.transform.rotation;
         Vector3 initPos = new Vector3(transform.position.x, ms_Height, transform.position.z);
@@ -85,7 +86,5 @@ public class CharaShoot : MonoBehaviour
         var bulletObject = Instantiate(m_BulletPrefab, initPos, rotation);
         var bullet = bulletObject.GetComponent<Bullet>();
         bullet.Setup(ms_Speed, 1, 1f);
-
-
     }
 }

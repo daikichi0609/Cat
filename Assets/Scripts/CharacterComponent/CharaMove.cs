@@ -1,4 +1,4 @@
-using NaughtyAttributes;
+﻿using NaughtyAttributes;
 using System;
 using UniRx;
 using UnityEngine;
@@ -159,27 +159,3 @@ public class CharaMove : MonoBehaviour
     }
     */
 }
-
-
-/// <summary>
-/// アニメーションパターン定義
-/// </summary>
-public enum ANIMATION_TYPE
-{
-    /// <summary>
-    /// 通常
-    /// </summary>
-    IDLE,
-
-    /// <summary>
-    /// 移動
-    /// </summary>
-    MOVE,
-
-    /// <summary>
-    /// 攻撃
-    /// </summary>
-    ATTACK,
-}
-
-

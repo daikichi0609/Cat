@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using System;
@@ -9,22 +9,22 @@ using TsugamerLibrary;
 public class FadeManager : Singleton<FadeManager>
 {
     /// <summary>
-    /// •‰æ–Ê
+    /// é»’ç”»é¢
     /// </summary>
     [SerializeField]
     private Image m_BlackScreen;
 
     /// <summary>
-    /// ”’‰æ–Ê
+    /// ç™½ç”»é¢
     /// </summary>
     [SerializeField]
     private Image m_WhiteScreen;
 
-    // ƒtƒFƒCƒh‘¬“x
+    // ãƒ•ã‚§ã‚¤ãƒ‰é€Ÿåº¦
     private static readonly float FADE_SPEED = 1f;
 
     /// <summary>
-    /// –¾“]
+    /// æ˜è»¢
     /// </summary>
     /// <param name="whileEvent"></param>
     /// <returns></returns>
@@ -36,7 +36,7 @@ public class FadeManager : Singleton<FadeManager>
     }
 
     /// <summary>
-    /// ˆÃ“]
+    /// æš—è»¢
     /// </summary>
     /// <param name="whileEvent"></param>
     /// <returns></returns>
@@ -46,7 +46,7 @@ public class FadeManager : Singleton<FadeManager>
     }
 
     /// <summary>
-    /// ƒzƒƒCƒgƒAƒEƒg
+    /// ãƒ›ãƒ¯ã‚¤ãƒˆã‚¢ã‚¦ãƒˆ
     /// </summary>
     /// <returns></returns>
     public async Task StartFadeWhite<T>(T arg, Action<T> whileEvent)
@@ -57,12 +57,12 @@ public class FadeManager : Singleton<FadeManager>
     }
 
     /// <summary>
-    /// ƒXƒNƒŠ[ƒ“ˆÃ“]
+    /// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æš—è»¢
     /// </summary>
     private Task FadeOutScreen(Image screen, float speed = 1f) => screen.DOFade(1f, speed).AsyncWaitForCompletion();
 
     /// <summary>
-    /// ƒXƒNƒŠ[ƒ“–¾“]
+    /// ã‚¹ã‚¯ãƒªãƒ¼ãƒ³æ˜è»¢
     /// </summary>
     private Task FadeInScreen(Image screen, float speed = 1f) => screen.DOFade(0f, speed).AsyncWaitForCompletion();
 }
