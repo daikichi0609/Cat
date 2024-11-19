@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4624765555536561119}
   - component: {fileID: 3601547784751688888}
   - component: {fileID: 6734106700596111337}
+  - component: {fileID: 1682852315921949651}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -75,6 +76,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerPrefab: {fileID: 2086949278227756083, guid: a7d1b382641aa489aa92985d90fef37d, type: 3}
   m_EnemyPrefab: {fileID: 2086949278227756083, guid: 7537ca8eb19b444fd81995c7c1ade759, type: 3}
+  m_HpBarPrefab: {fileID: 8241737580656990645, guid: 803c814f5037e454bba7c0853cd0ff61, type: 3}
+  m_WorldCanvasPrefab: {fileID: 4296258617114013771, guid: 29fedeeab68514a209d04264976efa43, type: 3}
 --- !u!114 &3601547784751688888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -97,5 +100,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fe4a928cc1e88b40b2cfb8dd1f84b2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1682852315921949651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6681012351742415626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03ea3e8bc2b08442393af31e15aeda29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

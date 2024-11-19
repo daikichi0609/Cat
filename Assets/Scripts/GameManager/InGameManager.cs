@@ -13,9 +13,7 @@ public class InGameManager : MonoBehaviour
 
     private async void Start()
     {
-        CharaObjectManager.GetInstance().CreatePlayer(ms_InitPos);
-        CharaObjectManager.GetInstance().CreateEnemy(new Vector3(0f, 0.5f, 3f));
-
+        CharaObjectManager.GetInstance().CreatePlayer(ms_InitPos); // プレイヤー生成
         await FadeManager.GetInstance().TurnBright(); // 明転
     }
 }

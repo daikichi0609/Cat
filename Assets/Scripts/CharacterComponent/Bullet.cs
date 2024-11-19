@@ -12,12 +12,15 @@ public class Bullet : MonoBehaviour
     private int Damage { get; set; }
     [ShowNativeProperty]
     private float TimeLimit { get; set; }
+    [ShowNativeProperty]
+    private CHARA_TYPE TargetType { get; set; }
 
-    public void Setup(float speed, int damage, float limit)
+    public void Setup(float speed, int damage, float limit, CHARA_TYPE target)
     {
         Speed = speed;
         Damage = damage;
         TimeLimit = limit;
+        TargetType = target;
     }
 
     private void Update()
@@ -34,7 +37,7 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision col)
     {
         var target = col.gameObject;
-        if (target.TryGetComponent<CharaStatus>(out var status) == false)
+        if (target.TryGetComponent<CharaStatus>(out var status) == false || status.Type.HasBitFlag(TargetType) == false)
             return;
 
         status.Damage(Damage);

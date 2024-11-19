@@ -5,6 +5,7 @@ using UnityEngine;
 using UniRx;
 using System;
 using Zenject;
+using UnityEngine.UI;
 
 public class CharaObjectManager : Singleton<CharaObjectManager>
 {
@@ -13,6 +14,14 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
 
     [SerializeField]
     private GameObject m_EnemyPrefab;
+
+    [SerializeField]
+    private GameObject m_HpBarPrefab;
+
+    [SerializeField]
+    private GameObject m_WorldCanvasPrefab;
+
+    private static readonly Vector3 ms_HpBarOffset = new Vector3(0f, 1f, 0f);
 
     /// <summary>
     /// プレイヤー
@@ -31,7 +40,7 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
     /// <returns></returns>
     public IDisposable CreatePlayer(Vector3 pos)
     {
-        if(ObjectPoolManager.GetInstance().TryGetGameObject(CHARA_NAME.BOXMAN, out var player) == false)
+        if (ObjectPoolManager.GetInstance().TryGetGameObject(CHARA_NAME.BOXMAN, out var player) == false)
             player = Instantiate(m_PlayerPrefab, pos, Quaternion.identity);
 
         return RegistPlayer(player);
@@ -79,6 +88,17 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
     {
         if (ObjectPoolManager.GetInstance().TryGetGameObject(CHARA_NAME.ENEMY, out var enemy) == false)
             enemy = Instantiate(m_EnemyPrefab, pos, Quaternion.identity);
+
+        // ----- Hpバーセット ----- //
+        var status = enemy.GetComponent<CharaStatus>();
+        var bar = Instantiate(m_HpBarPrefab);
+        var canvas = Instantiate(m_WorldCanvasPrefab);
+        bar.transform.SetParent(canvas.transform);
+        canvas.transform.position = enemy.transform.position + ms_HpBarOffset;
+        canvas.transform.SetParent(enemy.transform);
+        status.HpBar = bar.GetComponent<Slider>();
+        // ----- //
+
         return RegistEnemy(enemy);
     }
 

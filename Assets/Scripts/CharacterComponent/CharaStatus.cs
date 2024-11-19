@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharaStatus : MonoBehaviour
 {
@@ -29,18 +29,37 @@ public class CharaStatus : MonoBehaviour
     /// <summary>
     /// 現在のHP
     /// </summary>
-    private int CurrentHp { get; set; }
+    private ReactiveProperty<int> m_CurrentHp = new ReactiveProperty<int>();
+    private IObservable<int> CurrentHpObservable => m_CurrentHp;
+    private int CurrentHp { get => m_CurrentHp.Value; set => m_CurrentHp.Value = value; }
+
+    /// <summary>
+    /// Hpバー
+    /// </summary>
+    public Slider HpBar { get; set; }
 
     private void Start()
     {
         ObjectHolder = GetComponent<ObjectHolder>();
+
+        if (HpBar != null)
+        {
+            HpBar.maxValue = m_MaxHp;
+            HpBar.minValue = 0;
+            CurrentHp = m_MaxHp;
+            // Hpバー更新
+            CurrentHpObservable.SubscribeWithState(HpBar, (v, bar) =>
+            {
+                if (bar != null)
+                    bar.value = v;
+            }).AddTo(this);
+        }
     }
 
     /// <summary>
     /// ダメージ
     /// </summary>
     /// <param name="damage"></param>
-    /// <returns>死亡判定</returns>
     public void Damage(int damage)
     {
         CurrentHp = Math.Clamp(CurrentHp - damage, 0, m_MaxHp); // 0未満にならない

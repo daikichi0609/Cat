@@ -5,11 +5,6 @@ using UnityEngine;
 
 public class CharaMove : MonoBehaviour
 {
-    /// <summary>
-    /// カメラ旋回スピード
-    /// </summary>
-    private static readonly float ms_CameraSpeed = 40f;
-
     private ObjectHolder ObjectHolder { get; set; }
 
     /// <summary>

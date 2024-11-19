@@ -10,7 +10,7 @@ public class CharaShoot : MonoBehaviour
     /// <summary>
     /// 弾を撃ち出す高さ
     /// </summary>
-    private static readonly float ms_Height = 0.3f;
+    private static readonly float ms_Height = 1f;
 
     private ObjectHolder ObjectHolder { get; set; }
 
@@ -29,7 +29,12 @@ public class CharaShoot : MonoBehaviour
 
     private void Start()
     {
-        
+        var status = GetComponent<CharaStatus>();
+        var myType = status.Type;
+        if (myType.HasBitFlag(CHARA_TYPE.ENEMY) == true)
+            TargetType = CHARA_TYPE.PLAYER | CHARA_TYPE.ALLY;
+        else
+            TargetType = CHARA_TYPE.ENEMY;
     }
 
     /// <summary>
@@ -73,18 +78,20 @@ public class CharaShoot : MonoBehaviour
             return;
         }
 
+        /*
         var o = hit.collider.gameObject;
         if (o.TryGetComponent<CharaStatus>(out var status) == false || status.Type.HasBitFlag(CHARA_TYPE.PLAYER) || status.Type.HasBitFlag(CHARA_TYPE.ALLY)) // 味方サイドには当たらない
         {
             Debug.Log("敵以外にヒットしました");
             return;
         }
+        */
 
         var rotation = ObjectHolder.CharaObject.transform.rotation;
         Vector3 initPos = new Vector3(transform.position.x, ms_Height, transform.position.z);
 
         var bulletObject = Instantiate(m_BulletPrefab, initPos, rotation);
         var bullet = bulletObject.GetComponent<Bullet>();
-        bullet.Setup(ms_Speed, 1, 1f);
+        bullet.Setup(ms_Speed, 1, 1f, TargetType);
     }
 }
