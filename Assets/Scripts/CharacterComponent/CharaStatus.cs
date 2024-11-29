@@ -79,7 +79,6 @@ public class CharaStatus : ComponentBase
     /// </summary>
     private void Dead()
     {
-        var self = ObjectHolder.MoveObject;
-        ObjectPoolManager.GetInstance().SetGameObject(m_CharaName, self);
+        Owner.Dispose();
     }
 }

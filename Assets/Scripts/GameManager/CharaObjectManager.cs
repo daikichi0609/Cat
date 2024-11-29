@@ -38,13 +38,14 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
     /// プレイヤー作成
     /// </summary>
     /// <returns></returns>
-    public IDisposable CreatePlayer(Vector3 pos)
+    public void CreatePlayer(Vector3 pos)
     {
         if (ObjectPoolManager.GetInstance().TryGetGameObject(CHARA_NAME.BOXMAN, out var player) == false)
             player = Instantiate(m_PlayerPrefab, pos, Quaternion.identity);
 
         var collector = player.GetComponent<ComponentCollector>();
-        return RegistPlayer(collector);
+        var d = RegistPlayer(collector);
+        collector.CompositeDisposable.Add(d);
     }
 
     private IDisposable RegistPlayer(ComponentCollector player)
@@ -77,7 +78,7 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
 
             // プレイヤー入力受付
             var pInput = player.GetInterface<PlayerInput>();
-            InputManager.GetInstance().InputEvent.SubscribeWithState(pInput, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
+            InputManager.GetInstance().InputEvent.SubscribeWithState(pInput, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(player.CompositeDisposable);
         }
     }
 
@@ -85,7 +86,7 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
     /// エネミー作成
     /// </summary>
     /// <returns></returns>
-    public IDisposable CreateEnemy(Vector3 pos)
+    public void CreateEnemy(Vector3 pos)
     {
         if (ObjectPoolManager.GetInstance().TryGetGameObject(CHARA_NAME.ENEMY, out var enemy) == false)
             enemy = Instantiate(m_EnemyPrefab, pos, Quaternion.identity);
@@ -95,22 +96,26 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
 
         // ----- Hpバーセット ----- //
         var status = collector.GetInterface<CharaStatus>();
-        var bar = Instantiate(m_HpBarPrefab);
-        var canvas = Instantiate(m_WorldCanvasPrefab);
-        bar.transform.SetParent(canvas.transform);
-        canvas.transform.position = moveObject.transform.position + ms_HpBarOffset;
-        canvas.transform.SetParent(moveObject.transform);
-        status.HpBar = bar.GetComponent<Slider>();
+        if (status.HpBar == null)
+        {
+            var bar = Instantiate(m_HpBarPrefab);
+            var canvas = Instantiate(m_WorldCanvasPrefab);
+            bar.transform.SetParent(canvas.transform);
+            canvas.transform.position = moveObject.transform.position + ms_HpBarOffset;
+            canvas.transform.SetParent(moveObject.transform);
+            status.HpBar = bar.GetComponent<Slider>();
+        }
         // ----- //
 
-        return RegistEnemy(collector);
+        var d = RegistEnemy(collector);
+        collector.CompositeDisposable.Add(d);
     }
 
     private IDisposable RegistEnemy(ComponentCollector enemy)
     {
         m_EnemyList.Add(enemy);
-
         enemy.Initialize();
+
         return Disposable.CreateWithState((enemy, m_EnemyList), tuple =>
         {
             var enemy = tuple.Item1;
