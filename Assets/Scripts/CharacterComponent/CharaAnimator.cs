@@ -46,7 +46,7 @@ public enum ANIMATION_TYPE
     SKILL,
 }
 
-public class CharaAnimator : MonoBehaviour
+public class CharaAnimator : ComponentBase
 {
     [Serializable]
     private struct ActTicket { }
@@ -64,6 +64,12 @@ public class CharaAnimator : MonoBehaviour
     [ShowNativeProperty]
     public bool IsActing => m_TicketHolder.Count != 0;
 
+    protected override void Register(ComponentCollector owner)
+    {
+        base.Register(owner);
+        owner.Register(this);
+    }
+
     /// <summary>
     /// Act登録
     /// </summary>
@@ -80,7 +86,7 @@ public class CharaAnimator : MonoBehaviour
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    private IDisposable PlayAnimation(ANIMATION_TYPE type)
+    public IDisposable PlayAnimation(ANIMATION_TYPE type)
     {
         var key = GetKey(type);
         m_CharaAnimator.SetBool(key, true);

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using NaughtyAttributes;
+using UnityEngine;
 
-public class CharaShoot : MonoBehaviour
+public class CharaShoot : ComponentBase
 {
     /// <summary>
     /// スピード
@@ -12,7 +13,7 @@ public class CharaShoot : MonoBehaviour
     /// </summary>
     private static readonly float ms_Height = 1f;
 
-    private ObjectHolder ObjectHolder { get; set; }
+    private CharaObjectHolder ObjectHolder { get; set; }
 
     /// <summary>
     /// 弾丸プレハブ
@@ -20,11 +21,22 @@ public class CharaShoot : MonoBehaviour
     [SerializeField]
     private Bullet m_BulletPrefab;
 
+    /// <summary>
+    /// 着弾対象
+    /// </summary>
+    [ShowNativeProperty]
     private CHARA_TYPE TargetType { get; set; }
 
-    private void Awake()
+    protected override void Register(ComponentCollector owner)
     {
-        ObjectHolder = GetComponent<ObjectHolder>();
+        base.Register(owner);
+        owner.Register(this);
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        ObjectHolder = Owner.GetInterface<CharaObjectHolder>();
     }
 
     private void Start()

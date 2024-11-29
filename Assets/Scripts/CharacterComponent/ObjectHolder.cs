@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectHolder : MonoBehaviour
+public class CharaObjectHolder : ComponentBase
 {
     [SerializeField]
     private GameObject m_MoveObject;
@@ -11,4 +11,10 @@ public class ObjectHolder : MonoBehaviour
     [SerializeField]
     private GameObject m_CharaObject;
     public GameObject CharaObject => m_CharaObject;
+
+    protected override void Register(ComponentCollector owner)
+    {
+        base.Register(owner);
+        owner.Register(this);
+    }
 }

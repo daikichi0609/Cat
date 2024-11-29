@@ -26,13 +26,13 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
     /// <summary>
     /// プレイヤー
     /// </summary>
-    private GameObject m_Player;
-    public GameObject Player => m_Player;
+    private ComponentCollector m_Player;
+    public ComponentCollector Player => m_Player;
 
     /// <summary>
     /// 敵
     /// </summary>
-    private List<GameObject> m_EnemyList = new List<GameObject>();
+    private List<ComponentCollector> m_EnemyList = new List<ComponentCollector>();
 
     /// <summary>
     /// プレイヤー作成
@@ -43,10 +43,11 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
         if (ObjectPoolManager.GetInstance().TryGetGameObject(CHARA_NAME.BOXMAN, out var player) == false)
             player = Instantiate(m_PlayerPrefab, pos, Quaternion.identity);
 
-        return RegistPlayer(player);
+        var collector = player.GetComponent<ComponentCollector>();
+        return RegistPlayer(collector);
     }
 
-    private IDisposable RegistPlayer(GameObject player)
+    private IDisposable RegistPlayer(ComponentCollector player)
     {
         if (m_Player != null)
             Debug.Log("プレイヤーの上書きが発生しました。");
@@ -55,8 +56,10 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
         SetupPlayer(m_Player);
         return Disposable.CreateWithState(m_Player, self =>
         {
-            self.SetActive(false);
-            ObjectPoolManager.GetInstance().SetGameObject(CHARA_NAME.BOXMAN, self);
+            self.Dispose();
+            var moveObject = self.GetInterface<CharaObjectHolder>().MoveObject;
+            moveObject.SetActive(false);
+            ObjectPoolManager.GetInstance().SetGameObject(CHARA_NAME.BOXMAN, moveObject);
             self = null;
         });
 
@@ -64,18 +67,20 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
         /// プレイヤーセットアップ
         /// </summary>
         /// <param name="player"></param>
-        void SetupPlayer(GameObject player)
+        void SetupPlayer(ComponentCollector player)
         {
+            player.Initialize();
+
             // カメラ登録
-            var objectHolder = player.GetComponent<ObjectHolder>();
+            var objectHolder = player.GetInterface<CharaObjectHolder>();
             CameraHandler.GetInstance().SetParent(objectHolder.MoveObject);
 
             // 移動入力受付
-            var move = player.GetComponent<CharaMove>();
+            var move = player.GetInterface<CharaMove>();
             InputManager.GetInstance().InputEvent.SubscribeWithState(move, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
 
             // 射撃入力購読
-            var shoot = player.GetComponent<CharaShoot>();
+            var shoot = player.GetInterface<CharaShoot>();
             InputManager.GetInstance().InputStartEvent.SubscribeWithState(shoot, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
         }
     }
@@ -89,27 +94,35 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
         if (ObjectPoolManager.GetInstance().TryGetGameObject(CHARA_NAME.ENEMY, out var enemy) == false)
             enemy = Instantiate(m_EnemyPrefab, pos, Quaternion.identity);
 
+        var collector = enemy.GetComponent<ComponentCollector>();
+        var moveObject = collector.GetInterface<CharaObjectHolder>().MoveObject;
+
         // ----- Hpバーセット ----- //
-        var status = enemy.GetComponent<CharaStatus>();
+        var status = collector.GetInterface<CharaStatus>();
         var bar = Instantiate(m_HpBarPrefab);
         var canvas = Instantiate(m_WorldCanvasPrefab);
         bar.transform.SetParent(canvas.transform);
-        canvas.transform.position = enemy.transform.position + ms_HpBarOffset;
-        canvas.transform.SetParent(enemy.transform);
+        canvas.transform.position = moveObject.transform.position + ms_HpBarOffset;
+        canvas.transform.SetParent(moveObject.transform);
         status.HpBar = bar.GetComponent<Slider>();
         // ----- //
 
-        return RegistEnemy(enemy);
+        return RegistEnemy(collector);
     }
 
-    private IDisposable RegistEnemy(GameObject enemy)
+    private IDisposable RegistEnemy(ComponentCollector enemy)
     {
         m_EnemyList.Add(enemy);
+
+        enemy.Initialize();
         return Disposable.CreateWithState((enemy, m_EnemyList), tuple =>
         {
-            tuple.Item1.SetActive(false);
+            var enemy = tuple.Item1;
+            enemy.Dispose();
+            var moveObject = enemy.GetInterface<CharaObjectHolder>().MoveObject;
+            moveObject.SetActive(false);
             tuple.Item2.Remove(tuple.Item1);
-            ObjectPoolManager.GetInstance().SetGameObject(CHARA_NAME.ENEMY, tuple.Item1);
+            ObjectPoolManager.GetInstance().SetGameObject(CHARA_NAME.ENEMY, moveObject);
         });
     }
 }

@@ -15,6 +15,7 @@ public class ComponentCollector : MonoBehaviour
     /// Disposeするもの
     /// </summary>
     protected CompositeDisposable m_CompositeDisposable = new CompositeDisposable();
+    public CompositeDisposable CompositeDisposable => m_CompositeDisposable;
 
     /// <summary>
     /// 初期化
@@ -88,18 +89,18 @@ public class ComponentBase : MonoBehaviour
     /// <summary>
     /// コレクター
     /// </summary>
-    protected ICollector Owner { get; set; }
+    protected ComponentCollector Owner { get; set; }
 
     /// <summary>
     /// Owner取得
     /// </summary>
     private void Awake()
     {
-        Owner = GetComponent<ActorComponentCollector>();
+        Owner = GetComponent<ComponentCollector>();
         Register(Owner);
     }
 
-    public virtual void Register(ICollector owner)
+    protected virtual void Register(ComponentCollector owner)
     {
         // コンポーネント登録
     }

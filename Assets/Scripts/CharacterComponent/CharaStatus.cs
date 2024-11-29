@@ -3,9 +3,9 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharaStatus : MonoBehaviour
+public class CharaStatus : ComponentBase
 {
-    private ObjectHolder ObjectHolder { get; set; }
+    private CharaObjectHolder ObjectHolder { get; set; }
 
     /// <summary>
     /// キャラ名
@@ -38,9 +38,16 @@ public class CharaStatus : MonoBehaviour
     /// </summary>
     public Slider HpBar { get; set; }
 
-    private void Start()
+    protected override void Register(ComponentCollector owner)
     {
-        ObjectHolder = GetComponent<ObjectHolder>();
+        base.Register(owner);
+        owner.Register(this);
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        ObjectHolder = GetComponent<CharaObjectHolder>();
 
         if (HpBar != null)
         {
@@ -52,7 +59,7 @@ public class CharaStatus : MonoBehaviour
             {
                 if (bar != null)
                     bar.value = v;
-            }).AddTo(this);
+            }).AddTo(Owner.CompositeDisposable);
         }
     }
 

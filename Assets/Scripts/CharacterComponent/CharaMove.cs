@@ -1,11 +1,11 @@
 ﻿using NaughtyAttributes;
 using System;
-using UniRx;
 using UnityEngine;
 
-public class CharaMove : MonoBehaviour
+public class CharaMove : ComponentBase
 {
-    private ObjectHolder ObjectHolder { get; set; }
+    private CharaObjectHolder ObjectHolder { get; set; }
+    protected CharaAnimator CharaAnimator { get; set; }
 
     /// <summary>
     /// 速さ
@@ -13,14 +13,19 @@ public class CharaMove : MonoBehaviour
     [ShowNativeProperty]
     public float Speed { get; set; } = 3.0f;
 
-    [SerializeField]
-    private Animator m_CharaAnimator;
-
     private IDisposable m_IsMoving;
 
-    private void Awake()
+    protected override void Register(ComponentCollector owner)
     {
-        ObjectHolder = GetComponent<ObjectHolder>();
+        base.Register(owner);
+        owner.Register(this);
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        ObjectHolder = Owner.GetInterface<CharaObjectHolder>();
+        CharaAnimator = Owner.GetInterface<CharaAnimator>();
     }
 
     /// <summary>
@@ -79,7 +84,7 @@ public class CharaMove : MonoBehaviour
         Face(dir); // 向き
         MoveInternal(dir); // 移動
         if (m_IsMoving == null)　// アニメーション開始
-            m_IsMoving = PlayAnimation(ANIMATION_TYPE.MOVE);
+            m_IsMoving = CharaAnimator.PlayAnimation(ANIMATION_TYPE.MOVE);
     }
 
     /// <summary>
@@ -93,18 +98,6 @@ public class CharaMove : MonoBehaviour
     /// </summary>
     /// <param name="dir"></param>
     private void Face(Vector3 dir) => ObjectHolder.CharaObject.transform.rotation = Quaternion.LookRotation(dir);
-
-    /// <summary>
-    /// アニメーション
-    /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    private IDisposable PlayAnimation(ANIMATION_TYPE type)
-    {
-        var key = GetKey(type);
-        m_CharaAnimator.SetBool(key, true);
-        return Disposable.CreateWithState((this, key), tuple => tuple.Item1.m_CharaAnimator.SetBool(tuple.key, false));
-    }
 
     /// <summary>
     /// アニメーション切り替えキー取得

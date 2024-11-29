@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : ComponentBase
 {
     /// <summary>
     /// 速さ
@@ -16,9 +16,16 @@ public class Enemy : MonoBehaviour
 
     private CharaMove CharaMove { get; set; }
 
-    private void Start()
+    protected override void Register(ComponentCollector owner)
     {
-        CharaMove = GetComponent<CharaMove>();
+        base.Register(owner);
+        owner.Register(this);
+    }
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        CharaMove = Owner.GetInterface<CharaMove>();
         CharaMove.Speed = 1.0f;
     }
 
@@ -36,7 +43,7 @@ public class Enemy : MonoBehaviour
         var targetPos = target.transform.position;
         var dir = targetPos - this.transform.position;
 
-        if(dir.magnitude > TargetDistance)
+        if (dir.magnitude > TargetDistance)
             CharaMove.Move(dir.normalized);
     }
 }

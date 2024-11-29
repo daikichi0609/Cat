@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using NaughtyAttributes;
 
-public class Bullet : MonoBehaviour
+public class Bullet : ComponentBase
 {
     [ShowNativeProperty]
     private float CurrentLimit { get; set; }
@@ -14,6 +14,12 @@ public class Bullet : MonoBehaviour
     private float TimeLimit { get; set; }
     [ShowNativeProperty]
     private CHARA_TYPE TargetType { get; set; }
+
+    protected override void Register(ComponentCollector owner)
+    {
+        base.Register(owner);
+        owner.Register(this);
+    }
 
     public void Setup(float speed, int damage, float limit, CHARA_TYPE target)
     {
