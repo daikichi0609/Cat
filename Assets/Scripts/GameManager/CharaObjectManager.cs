@@ -75,13 +75,9 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
             var objectHolder = player.GetInterface<CharaObjectHolder>();
             CameraHandler.GetInstance().SetParent(objectHolder.MoveObject);
 
-            // 移動入力受付
-            var move = player.GetInterface<CharaMove>();
-            InputManager.GetInstance().InputEvent.SubscribeWithState(move, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
-
-            // 射撃入力購読
-            var shoot = player.GetInterface<CharaShoot>();
-            InputManager.GetInstance().InputStartEvent.SubscribeWithState(shoot, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
+            // プレイヤー入力受付
+            var pInput = player.GetInterface<PlayerInput>();
+            InputManager.GetInstance().InputEvent.SubscribeWithState(pInput, (input, self) => self.DetectInput(input.KeyCodeFlag)).AddTo(this);
         }
     }
 

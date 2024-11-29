@@ -1,19 +1,23 @@
-﻿using NaughtyAttributes;
+﻿using System;
+using System.Threading.Tasks;
+using NaughtyAttributes;
 using UnityEngine;
 
 public class CharaShoot : ComponentBase
 {
     /// <summary>
-    /// スピード
-    /// </summary>
-    private static readonly float ms_Speed = 10f;
-
-    /// <summary>
     /// 弾を撃ち出す高さ
     /// </summary>
     private static readonly float ms_Height = 1f;
 
+    private static readonly float ms_BulletSpeed = 10f;
+    private static readonly int ms_BulletDamage = 2;
+    private static readonly float ms_BulletTimeLimit = 1f;
+    private static readonly int ms_BurstCount = 3;
+
     private CharaObjectHolder ObjectHolder { get; set; }
+    private CharaMove CharaMove { get; set; }
+    private CharaAnimator CharaAnimator { get; set; }
 
     /// <summary>
     /// 弾丸プレハブ
@@ -37,11 +41,10 @@ public class CharaShoot : ComponentBase
     {
         base.Initialize();
         ObjectHolder = Owner.GetInterface<CharaObjectHolder>();
-    }
+        CharaMove = Owner.GetInterface<CharaMove>();
+        CharaAnimator = Owner.GetInterface<CharaAnimator>();
 
-    private void Start()
-    {
-        var status = GetComponent<CharaStatus>();
+        var status = Owner.GetInterface<CharaStatus>();
         var myType = status.Type;
         if (myType.HasBitFlag(CHARA_TYPE.ENEMY) == true)
             TargetType = CHARA_TYPE.PLAYER | CHARA_TYPE.ALLY;
@@ -50,60 +53,44 @@ public class CharaShoot : ComponentBase
     }
 
     /// <summary>
-    /// 購読用
-    /// </summary>
-    /// <param name="flag"></param>
-    public void DetectInput(KeyCodeFlag flag)
-    {
-        // 移動検知
-        if (DetectInputShoot(flag) == true)
-            return;
-    }
-
-    /// <summary>
-    /// 移動入力検知
-    /// </summary>
-    /// <param name="flag"></param>
-    /// <returns></returns>
-    private bool DetectInputShoot(KeyCodeFlag flag)
-    {
-        if (flag.HasBitFlag(KeyCodeFlag.Mouse0))
-        {
-            Shoot();
-            return true;
-        }
-        return false;
-    }
-
-    /// <summary>
     /// 攻撃
     /// </summary>
     /// <param name="dir"></param>
-    private void Shoot()
+    public void Shoot()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit = new RaycastHit();
-        Debug.DrawRay(ray.origin, ray.direction * 1000, Color.red, 3, false);
-        if (Physics.Raycast(ray, out hit) == false) // hit確認
+        var charaPos = ObjectHolder.MoveObject.transform.position; // キャラの座標
+        var distance = Vector3.Distance(charaPos, Camera.main.transform.position); // キャラとカメラの距離
+        var screenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance); // マウスの3D座標
+        var worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
+#if DEBUG
+        Debug.Log(worldPosition);
+#endif 
+
+        worldPosition.y = charaPos.y;
+        var dir = (worldPosition - charaPos).normalized;
+        CharaMove.Face(dir); // 向く
+
+        var t = CharaAnimator.RegisterAct();
+        BurstShoot(t, ms_BurstCount);
+    }
+
+    private async void BurstShoot(IDisposable t, int count)
+    {
+        for (int i = 0; i < ms_BurstCount; i++)
         {
-            Debug.Log("ヒットしませんでした");
-            return;
+            ShootInternal();
+            await Task.Delay(100);
         }
+        t.Dispose();
+    }
 
-        /*
-        var o = hit.collider.gameObject;
-        if (o.TryGetComponent<CharaStatus>(out var status) == false || status.Type.HasBitFlag(CHARA_TYPE.PLAYER) || status.Type.HasBitFlag(CHARA_TYPE.ALLY)) // 味方サイドには当たらない
-        {
-            Debug.Log("敵以外にヒットしました");
-            return;
-        }
-        */
+    private void ShootInternal()
+    {
+        var rotation = ObjectHolder.CharaObject.transform.rotation; // キャラの方向
+        Vector3 initPos = new Vector3(transform.position.x, ms_Height, transform.position.z); // 初期生成座標
 
-        var rotation = ObjectHolder.CharaObject.transform.rotation;
-        Vector3 initPos = new Vector3(transform.position.x, ms_Height, transform.position.z);
-
-        var bulletObject = Instantiate(m_BulletPrefab, initPos, rotation);
+        var bulletObject = Instantiate(m_BulletPrefab, initPos, rotation); // 弾丸生成
         var bullet = bulletObject.GetComponent<Bullet>();
-        bullet.Setup(ms_Speed, 1, 1f, TargetType);
+        bullet.Setup(ms_BulletSpeed, ms_BulletDamage, ms_BulletTimeLimit, TargetType); // セットパラメタ
     }
 }

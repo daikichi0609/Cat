@@ -28,50 +28,10 @@ public class CharaMove : ComponentBase
         CharaAnimator = Owner.GetInterface<CharaAnimator>();
     }
 
-    /// <summary>
-    /// 購読用
-    /// </summary>
-    /// <param name="flag"></oparam>
-    public void DetectInput(KeyCodeFlag flag)
+    public override void Dispose()
     {
-        // 移動検知
-        if (DetectInputMove(flag) == true)
-            return;
-        else
-        {
-            m_IsMoving?.Dispose(); // 移動アニメーション終了
-            m_IsMoving = null;
-        }
-    }
-
-    /// <summary>
-    /// 移動入力検知
-    /// </summary>
-    /// <param name="flag"></param>
-    /// <returns></returns>
-    private bool DetectInputMove(KeyCodeFlag flag)
-    {
-        var direction = new Vector3Int();
-
-        if (flag.HasBitFlag(KeyCodeFlag.W))
-            direction += new Vector3Int(0, 0, 1);
-
-        if (flag.HasBitFlag(KeyCodeFlag.A))
-            direction += new Vector3Int(-1, 0, 0);
-
-        if (flag.HasBitFlag(KeyCodeFlag.S))
-            direction += new Vector3Int(0, 0, -1);
-
-        if (flag.HasBitFlag(KeyCodeFlag.D))
-            direction += new Vector3Int(1, 0, 0);
-
-        // 入力なし
-        if (direction == new Vector3Int(0, 0, 0))
-            return false;
-
-        // 移動
-        Move(direction.ToDirEnum());
-        return true;
+        StopMove();
+        base.Dispose();
     }
 
     /// <summary>
@@ -97,24 +57,18 @@ public class CharaMove : ComponentBase
     /// 方向転換
     /// </summary>
     /// <param name="dir"></param>
-    private void Face(Vector3 dir) => ObjectHolder.CharaObject.transform.rotation = Quaternion.LookRotation(dir);
+    public void Face(Vector3 dir) => ObjectHolder.CharaObject.transform.rotation = Quaternion.LookRotation(dir);
 
     /// <summary>
-    /// アニメーション切り替えキー取得
+    /// 移動終了
     /// </summary>
-    /// <param name="type"></param>
-    /// <returns></returns>
-    public static string GetKey(ANIMATION_TYPE type)
+    public void StopMove()
     {
-        string key = type switch
+        if (m_IsMoving != null)
         {
-            ANIMATION_TYPE.IDLE => "",
-            ANIMATION_TYPE.MOVE => "IsRunning",
-            ANIMATION_TYPE.ATTACK => "IsAttacking",
-            _ => "",
-        };
-
-        return key;
+            m_IsMoving.Dispose(); // 移動アニメーション終了
+            m_IsMoving = null;
+        }
     }
 
     /*

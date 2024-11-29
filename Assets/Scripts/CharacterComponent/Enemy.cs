@@ -29,19 +29,16 @@ public class Enemy : ComponentBase
         CharaMove.Speed = 1.0f;
     }
 
-    private void Update()
-    {
-        Chase();
-    }
+    private void Update() => Chase();
 
     /// <summary>
-    /// 
+    /// プレイヤーを追走
     /// </summary>
     public void Chase()
     {
         var target = CharaObjectManager.GetInstance().Player;
         var targetPos = target.transform.position;
-        var dir = targetPos - this.transform.position;
+        var dir = targetPos - transform.position;
 
         if (dir.magnitude > TargetDistance)
             CharaMove.Move(dir.normalized);

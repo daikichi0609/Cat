@@ -44,6 +44,11 @@ public enum ANIMATION_TYPE
     /// スキル
     /// </summary>
     SKILL,
+
+    /// <summary>
+    /// 射撃
+    /// </summary>
+    SHOOT,
 }
 
 public class CharaAnimator : ComponentBase
@@ -74,7 +79,7 @@ public class CharaAnimator : ComponentBase
     /// Act登録
     /// </summary>
     /// <returns></returns>
-    private IDisposable RegisterAct()
+    public IDisposable RegisterAct()
     {
         var t = new ActTicket();
         m_TicketHolder.Enqueue(t);
@@ -124,6 +129,7 @@ public class CharaAnimator : ComponentBase
             ANIMATION_TYPE.DAMAGE => "IsDamaging",
             ANIMATION_TYPE.SLEEP => "IsSleeping",
             ANIMATION_TYPE.SKILL => "UsingSkill",
+            ANIMATION_TYPE.SHOOT => "UsingSkill",
             _ => "",
         };
 
