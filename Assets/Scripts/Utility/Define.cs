@@ -15,8 +15,17 @@ public enum CHARA_TYPE
     PLAYER = 1 << 2,
 }
 
+[Flags]
+public enum ATTACK_TYPE
+{
+    NONE = 0,
+    CRUSH = 1 << 0,
+}
+
 static class EnumExtension
 {
     // Enumごとに拡張メソッドを作る
     public static bool HasBitFlag(this CHARA_TYPE value, CHARA_TYPE flag) => (value & flag) == flag;
+
+    public static bool HasBitFlag(this ATTACK_TYPE value, ATTACK_TYPE flag) => (value & flag) == flag;
 }

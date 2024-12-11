@@ -19,6 +19,6 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        CharaObjectManager.GetInstance().CreateEnemy(new Vector3(0f, 0.5f, 3f));
+        CharaObjectManager.GetInstance().CreateEnemy(new Vector3(0f, 0.05f, 3f));
     }
 }

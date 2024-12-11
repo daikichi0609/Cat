@@ -33,6 +33,7 @@ public class CharaObjectManager : Singleton<CharaObjectManager>
     /// 敵
     /// </summary>
     private List<ComponentCollector> m_EnemyList = new List<ComponentCollector>();
+    public List<ComponentCollector> EnemyList => m_EnemyList;
 
     /// <summary>
     /// プレイヤー作成

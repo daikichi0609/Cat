@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BulletPrefab: {fileID: 5093345945502568391, guid: 99e9e68872d860f41af32b4d1e9a418d, type: 3}
+  m_BulletBombPrefab: {fileID: 4414395499606580007, guid: 8d11796721d044b3cac469c329b4bd2f, type: 3}
 --- !u!114 &7116689284534879736
 MonoBehaviour:
   m_ObjectHideFlags: 0

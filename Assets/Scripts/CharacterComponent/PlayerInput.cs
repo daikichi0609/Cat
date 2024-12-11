@@ -35,7 +35,11 @@ public class PlayerInput : ComponentBase
         if (CharaAnimator.IsActing == true)
             return false;
 
-        // 射撃
+        // 爆発射撃
+        if (DetectInputExplosiveShoot(flag) == true)
+            return true;
+
+        // バースト射撃
         if (DetectInputShoot(flag) == true)
             return true;
 
@@ -53,11 +57,26 @@ public class PlayerInput : ComponentBase
     /// </summary>
     /// <param name="flag"></param>
     /// <returns></returns>
+    private bool DetectInputExplosiveShoot(KeyCodeFlag flag)
+    {
+        if (flag.HasBitFlag(KeyCodeFlag.Mouse1))
+        {
+            CharaShoot.ShootBulletBomb();
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// 射撃入力検知
+    /// </summary>
+    /// <param name="flag"></param>
+    /// <returns></returns>
     private bool DetectInputShoot(KeyCodeFlag flag)
     {
         if (flag.HasBitFlag(KeyCodeFlag.Mouse0))
         {
-            CharaShoot.Shoot();
+            CharaShoot.ShootBullet();
             return true;
         }
         return false;

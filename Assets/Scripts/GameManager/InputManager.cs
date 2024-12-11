@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 using System;
-using Zenject;
 using TsugamerLibrary;
 
 public class InputManager : Singleton<InputManager>
@@ -88,6 +85,9 @@ public class InputManager : Singleton<InputManager>
         if (Input.GetKey(KeyCode.Mouse0))
             flag |= KeyCodeFlag.Mouse0;
 
+        if (Input.GetKey(KeyCode.Mouse1))
+            flag |= KeyCodeFlag.Mouse1;
+
         return flag;
     }
 
@@ -137,6 +137,9 @@ public class InputManager : Singleton<InputManager>
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
             flag |= KeyCodeFlag.Mouse0;
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+            flag |= KeyCodeFlag.Mouse1;
 
         return flag;
     }

@@ -9,7 +9,7 @@ public class InGameManager : MonoBehaviour
     /// <summary>
     /// プレイヤー初期位置
     /// </summary>
-    private static readonly Vector3 ms_InitPos = new Vector3(0f, 0.5f, 0f);
+    private static readonly Vector3 ms_InitPos = new Vector3(0f, 0.05f, 0f);
 
     private async void Start()
     {

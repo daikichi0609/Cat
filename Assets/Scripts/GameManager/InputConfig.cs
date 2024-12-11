@@ -34,6 +34,7 @@ public enum KeyCodeFlag
 
     // マウス
     Mouse0 = 1 << 12,
+    Mouse1 = 1 << 13,
 }
 
 public readonly struct InputInfo

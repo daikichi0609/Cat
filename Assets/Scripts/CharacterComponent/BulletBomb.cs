@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using NaughtyAttributes;
+using System.Threading.Tasks;
+using System.Threading;
 
 public class BulletBomb : ComponentBase
 {
@@ -7,13 +9,12 @@ public class BulletBomb : ComponentBase
     private float CurrentLimit { get; set; }
 
     [ShowNativeProperty]
-    private float Speed { get; set; }
-    [ShowNativeProperty]
     private int Damage { get; set; }
     [ShowNativeProperty]
-    private float TimeLimit { get; set; }
-    [ShowNativeProperty]
     private CHARA_TYPE TargetType { get; set; }
+
+    private Task ShootTask { get; set; }
+    private CancellationTokenSource Cts { get; set; }
 
     protected override void Register(ComponentCollector owner)
     {
@@ -21,23 +22,50 @@ public class BulletBomb : ComponentBase
         owner.Register(this);
     }
 
-    public void Setup(float speed, int damage, float limit, CHARA_TYPE target)
+    public override void Dispose()
     {
-        Speed = speed;
-        Damage = damage;
-        TimeLimit = limit;
-        TargetType = target;
+        if (ShootTask?.IsCompleted == false)
+            Cts.Cancel();
+
+        base.Dispose();
+        Destroy(gameObject);
     }
 
-    private void Update()
+    public void Shoot(int damage, CHARA_TYPE target, Vector3 targetPos)
     {
-        CurrentLimit += Time.deltaTime;
-        if (CurrentLimit >= TimeLimit)
+        Damage = damage;
+        TargetType = target;
+
+        Cts = new CancellationTokenSource();
+        ShootTask = ShootInternal(gameObject, 1f, gameObject.transform.position, targetPos, 1f);
+    }
+
+    public async Task ShootInternal(GameObject self, float height, Vector3 start, Vector3 end, float duration)
+    {
+        // 中点を求める
+        Vector3 half = end - start * 0.50f + start;
+        half.y += Vector3.up.y + height;
+        await LerpShoot(self, start, half, end, duration);
+    }
+
+    private async Task LerpShoot(GameObject self, Vector3 start, Vector3 half, Vector3 end, float time, float rate = 0f)
+    {
+        float startTime = Time.timeSinceLevelLoad;
+        while (rate < 1.0f)
         {
-            Destroy(gameObject);
-            return;
+            float diff = Time.timeSinceLevelLoad - startTime;
+            rate = diff / time;
+            self.transform.position = CalcLerpPoint(start, half, end, rate);
+            await Task.Delay(1);
         }
-        transform.Translate(Vector3.forward * Time.deltaTime * Speed);
+        Explosion();
+
+        Vector3 CalcLerpPoint(Vector3 p0, Vector3 p1, Vector3 p2, float t)
+        {
+            var a = Vector3.Lerp(p0, p1, t);
+            var b = Vector3.Lerp(p1, p2, t);
+            return Vector3.Lerp(a, b, t);
+        }
     }
 
     private void OnCollisionEnter(Collision col)
@@ -47,6 +75,12 @@ public class BulletBomb : ComponentBase
             return;
 
         status.Damage(Damage);
-        Destroy(gameObject);
+        Explosion();
+    }
+
+    private void Explosion()
+    {
+
+        Dispose();
     }
 }

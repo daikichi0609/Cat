@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 6323416433856691535}
   - component: {fileID: 5712220462017872176}
   - component: {fileID: 3498837343179284279}
-  - component: {fileID: 5093345945502568391}
+  - component: {fileID: 4414395499606580007}
   - component: {fileID: 2135834326326712073}
   - component: {fileID: 706208458773563615}
   m_Layer: 0
-  m_Name: Bullet
+  m_Name: BulletBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71f3296be4885465c894c83612161da5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5093345945502568391
+--- !u!114 &4414395499606580007
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -108,7 +108,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7628366343484362742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 911a228e2871740e9ba9a6836d6eadd8, type: 3}
+  m_Script: {fileID: 11500000, guid: af87939e97c744dde996590238f0eec9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!135 &2135834326326712073
@@ -157,5 +157,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0

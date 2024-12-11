@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
 using NaughtyAttributes;
+using System.Threading.Tasks;
+using System.Threading;
 
 public class Bullet : ComponentBase
 {
-    [ShowNativeProperty]
-    private float CurrentLimit { get; set; }
-
-    [ShowNativeProperty]
-    private float Speed { get; set; }
     [ShowNativeProperty]
     private int Damage { get; set; }
     [ShowNativeProperty]
@@ -15,29 +12,49 @@ public class Bullet : ComponentBase
     [ShowNativeProperty]
     private CHARA_TYPE TargetType { get; set; }
 
+    private Task ShootTask { get; set; }
+    private CancellationTokenSource Cts { get; set; }
+
     protected override void Register(ComponentCollector owner)
     {
         base.Register(owner);
         owner.Register(this);
     }
 
-    public void Setup(float speed, int damage, float limit, CHARA_TYPE target)
+    public override void Initialize()
     {
-        Speed = speed;
+        base.Initialize();
+    }
+
+    public override void Dispose()
+    {
+        if (ShootTask?.IsCompleted == false)
+            Cts.Cancel();
+
+        base.Dispose();
+        Destroy(gameObject);
+    }
+
+    public void Shoot(float speed, int damage, float limit, CHARA_TYPE target)
+    {
         Damage = damage;
         TimeLimit = limit;
         TargetType = target;
+
+        Cts = new CancellationTokenSource();
+        ShootTask = ShootInternal(speed, Cts);
     }
 
-    private void Update()
+    private async Task ShootInternal(float speed, CancellationTokenSource cts)
     {
-        CurrentLimit += Time.deltaTime;
-        if (CurrentLimit >= TimeLimit)
+        float currentLimit = 0f;
+        while (currentLimit < TimeLimit && Cts.IsCancellationRequested == false)
         {
-            Destroy(gameObject);
-            return;
+            currentLimit += Time.deltaTime;
+            transform.Translate(Vector3.forward * Time.deltaTime * speed);
+            await Task.Delay(1);
         }
-        transform.Translate(Vector3.forward * Time.deltaTime * Speed);
+        Dispose();
     }
 
     private void OnCollisionEnter(Collision col)
@@ -47,6 +64,9 @@ public class Bullet : ComponentBase
             return;
 
         status.Damage(Damage);
-        Destroy(gameObject);
+#if DEBUG
+        Debug.Log("ヒット");
+#endif 
+        Dispose();
     }
 }
